@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -24,14 +25,15 @@ public class AuthenticationController {
     UserService service;
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> registerUser(@RequestBody @JsonView(UserDto.UserView.RegistrationPost.class) UserDto userDto) {
+    public ResponseEntity<Object> registerUser(@RequestBody @Validated(UserDto.UserView.RegistrationPost.class)
+                                                   @JsonView(UserDto.UserView.RegistrationPost.class) UserDto userDto) {
         if (service.existsByUserName(userDto.getUsername())) {
-            ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Username is Already Taken!");
+           return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Username is Already Taken!");
         }
         if (service.existsByEmail(userDto.getEmail())) {
-            ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Email is Already Taken!");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Email is Already Taken!");
         }
-
+        //add future validate for number minimum caracters
         var userModel = new UserModel();
         BeanUtils.copyProperties(userDto, userModel);
         userModel.setUserStatus(UserStatus.ACTIVE);
