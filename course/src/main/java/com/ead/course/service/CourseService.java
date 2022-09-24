@@ -3,7 +3,17 @@ package com.ead.course.service;
 import com.ead.course.model.CourseModel;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 
 public interface CourseService {
     void delete (CourseModel courseModel);
+
+    CourseModel save(CourseModel courseModel);
+
+    Optional<CourseModel> findById(UUID courseId);
+
+    List<CourseModel> findAll();
 }
