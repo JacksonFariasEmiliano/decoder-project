@@ -1,9 +1,11 @@
 package com.ead.course.service;
 
 import com.ead.course.model.CourseModel;
-import org.springframework.stereotype.Service;
+import com.ead.course.specifications.SpecificationsTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,5 +17,5 @@ public interface CourseService {
 
     Optional<CourseModel> findById(UUID courseId);
 
-    List<CourseModel> findAll();
+    Page<CourseModel> findAll(Specification<CourseModel> spec, Pageable pageable);
 }
